@@ -6,6 +6,9 @@
 
 # IntelliJ IDEA
 .idea/
+target/
+dependency-reduced-pom.xml
+mrworldwide.iml
 
 # BlueJ files
 *.ctxt
