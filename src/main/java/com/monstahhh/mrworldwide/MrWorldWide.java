@@ -1,6 +1,6 @@
 package com.monstahhh.mrworldwide;
 
-import com.monstahhh.config.ConfigReader;
+import com.monstahhh.config.Config;
 
 import java.io.IOException;
 
@@ -10,6 +10,7 @@ public class MrWorldWide {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello World");
-        new ConfigReader().read();
+        Config conf = new Config().read();
+        System.out.println(conf.getToken());
     }
 }

@@ -1,5 +1,11 @@
 package com.monstahhh.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.File;
+import java.io.IOException;
+
 public class Config {
 
     private boolean debug;
@@ -10,7 +16,8 @@ public class Config {
     private String dblToken;
     private String serverToken;
 
-    public Config() {}
+    public Config() {
+    }
 
     public Config(boolean debug, String token, String weatherToken, String currencyToken, String apiToken, String dblToken, String serverToken) {
         this.debug = debug;
@@ -48,6 +55,15 @@ public class Config {
 
     public String getServerToken() {
         return serverToken;
+    }
+
+    public Config read() throws IOException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        File file = new File(classLoader.getResource("config.yml").getFile());
+
+        ObjectMapper om = new ObjectMapper(new YAMLFactory());
+
+        return om.readValue(file, Config.class);
     }
 
 }
