@@ -10,6 +10,9 @@ target/
 dependency-reduced-pom.xml
 mrworldwide.iml
 
+# Configs
+src/main/resources/*
+
 # BlueJ files
 *.ctxt
 
