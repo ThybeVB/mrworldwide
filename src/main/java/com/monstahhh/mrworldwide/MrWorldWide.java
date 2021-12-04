@@ -24,14 +24,13 @@ public class MrWorldWide {
         JDABuilder builder = JDABuilder.createDefault(config.getToken());
         builder.setCompression(Compression.ZLIB);
         builder.setActivity(Activity.watching("the world"));
-        builder.setContextEnabled(false);
         builder.setAutoReconnect(true);
-        /*builder.addEventListeners();*/
+        builder.addEventListeners(new HelpCommand());
         /*configureMemoryUsage(builder);*/
 
         jda = builder.build();
 
-        new HelpCommand(jda);
+        jda.upsertCommand("help", "Receive the various commands of the bot").queue();
     }
 
     private static void configureMemoryUsage(JDABuilder builder) {
