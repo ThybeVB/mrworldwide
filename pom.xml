@@ -61,22 +61,10 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>2.13.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.13.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j18-impl</artifactId>
-            <version>2.14.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.discordbots</groupId>
-            <artifactId>DBL-Java-Library</artifactId>
-            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -88,11 +76,6 @@
                     <artifactId>opus-java</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160810</version>
         </dependency>
     </dependencies>
 </project>
