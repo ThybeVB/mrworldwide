@@ -23,7 +23,9 @@ public class HelpCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        if (!event.getName().equals("help")) return;
+        if (event.getGuild() == null || !event.getName().equals("help"))
+            return;
+
         event.reply(helpMsg).setEphemeral(false).queue();
     }
 }

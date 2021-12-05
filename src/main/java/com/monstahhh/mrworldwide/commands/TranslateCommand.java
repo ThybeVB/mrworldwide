@@ -8,6 +8,11 @@ public class TranslateCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        /*TODO*/
+        if (event.getGuild() == null || !event.getName().equals("translate"))
+            return;
+
+        String sentenceToBeTranslated = event.getOption("sentence").getAsString();
+        String language = event.getOption("originallanguage").getAsString();
+        String destinationLanguage = event.getOption("destinationlanguage").getAsString();
     }
 }

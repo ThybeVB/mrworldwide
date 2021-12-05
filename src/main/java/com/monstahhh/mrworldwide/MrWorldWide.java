@@ -2,10 +2,10 @@ package com.monstahhh.mrworldwide;
 
 import com.monstahhh.config.Config;
 import com.monstahhh.mrworldwide.commands.HelpCommand;
+import com.monstahhh.mrworldwide.commands.TranslateCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MrWorldWide {
 
@@ -30,7 +31,7 @@ public class MrWorldWide {
         builder.setCompression(Compression.ZLIB);
         builder.setActivity(Activity.watching("the world"));
         builder.setAutoReconnect(true);
-        builder.addEventListeners(new HelpCommand());
+        builder.addEventListeners(new HelpCommand(), new TranslateCommand());
         /*configureMemoryUsage(builder);*/
 
         jda = builder.build();
