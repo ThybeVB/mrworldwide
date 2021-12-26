@@ -16,11 +16,9 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.apache.commons.lang3.LocaleUtils;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.Locale;
 
 public class MrWorldWide {
 
@@ -45,8 +43,8 @@ public class MrWorldWide {
                 new CommandData("help", "Receive the various commands of the bot"),
                 new CommandData("weather", "Receive weather for a specific city or country")
                         .addOptions(
-                                new OptionData(OptionType.STRING, "city", "The city which should be checked if specified").setRequired(false),
-                                new OptionData(OptionType.STRING, "country", "The country in which the city is located").setRequired(true)
+                                new OptionData(OptionType.STRING, "country", "The country in which the city is located").setRequired(false),
+                                new OptionData(OptionType.STRING, "city", "The city which should be checked if specified").setRequired(false)
                         ),
                 new CommandData("convert", "Converts an amount of money from one currency to the other")
                         .addOptions(

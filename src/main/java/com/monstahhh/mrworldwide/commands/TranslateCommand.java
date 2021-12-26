@@ -3,6 +3,7 @@ package com.monstahhh.mrworldwide.commands;
 import com.monstahhh.http.HttpClient;
 import com.monstahhh.http.HttpMethod;
 import com.monstahhh.http.HttpResponse;
+import com.neovisionaries.i18n.LanguageCode;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -27,8 +28,8 @@ public class TranslateCommand extends ListenerAdapter {
             return;
 
         String sentenceToBeTranslated = event.getOption("sentence").getAsString();
-        String language = event.getOption("originallanguage").getAsString();
-        String destinationLanguage = event.getOption("destinationlanguage").getAsString();
+        String language = this.getLanguageCode(event.getOption("originallanguage").getAsString());
+        String destinationLanguage = this.getLanguageCode(event.getOption("destinationlanguage").getAsString());
 
         String result = getTranslation(language, destinationLanguage, sentenceToBeTranslated);
         EmbedBuilder eb = new EmbedBuilder();
@@ -98,5 +99,11 @@ public class TranslateCommand extends ListenerAdapter {
         }
 
         return allMatches.get(0);
+    }
+
+    private String getLanguageCode(String language) {
+        String capLang = language.substring(0, 1).toUpperCase() + language.substring(1); //Language needs to have an uppercase letter to be found
+        List<LanguageCode> languageCodes = LanguageCode.findByName(capLang);
+        return languageCodes.get(0).toString();
     }
 }

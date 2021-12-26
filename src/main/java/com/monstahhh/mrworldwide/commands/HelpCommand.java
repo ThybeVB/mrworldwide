@@ -26,6 +26,6 @@ public class HelpCommand extends ListenerAdapter {
         if (event.getGuild() == null || !event.getName().equals("help"))
             return;
 
-        event.reply(helpMsg).setEphemeral(false).queue();
+        event.reply(helpMsg).setEphemeral(true).queue();
     }
 }
