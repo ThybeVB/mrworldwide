@@ -22,32 +22,51 @@ import java.util.regex.Pattern;
 
 public class TranslateCommand extends ListenerAdapter {
 
+    private final EmbedBuilder defaultError = new EmbedBuilder()
+            .setTitle("Mr. Error")
+            .setColor(Color.RED);
+
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (event.getGuild() == null || !event.getName().equals("translate"))
             return;
 
-        String sentenceToBeTranslated = event.getOption("sentence").getAsString();
-        String language = this.getLanguageCode(event.getOption("originallanguage").getAsString());
-        String destinationLanguage = this.getLanguageCode(event.getOption("destinationlanguage").getAsString());
+        event.deferReply(false).queue();
+        InteractionHook hook = event.getHook();
 
-        String result = getTranslation(language, destinationLanguage, sentenceToBeTranslated);
+        String sentenceToBeTranslated = event.getOption("sentence").getAsString();
+        String language = event.getOption("originallanguage").getAsString();
+        String destinationLanguage = event.getOption("destinationlanguage").getAsString();
+
+        String langCodeOrigin;
+        String langCodeDestination;
+        try {
+            langCodeOrigin = this.getLanguageCode(language);
+            langCodeDestination = this.getLanguageCode(destinationLanguage);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            defaultError.addField("Invalid language provided", "You have provided an invalid language name.", false);
+            defaultError.setFooter("Your input: " + language + ", " + destinationLanguage);
+            hook.sendMessageEmbeds(defaultError.build()).setEphemeral(false).queue();
+            return;
+        }
+
+        String result = getTranslation(langCodeOrigin, langCodeDestination, sentenceToBeTranslated);
         EmbedBuilder eb = new EmbedBuilder();
 
         if (result == null) {
-            event.reply("There was an error translating the sentence. Please try again later.").setEphemeral(false).queue();
+            hook.sendMessage("There was an error translating the sentence. Please try again later.").setEphemeral(false).queue();
         } else {
-            String link = String.format("https://translate.google.com?sl=%s&tl=%s&op=translate&text=", language, destinationLanguage);
+            String link = String.format("https://translate.google.com?sl=%s&tl=%s&op=translate&text=", langCodeOrigin, langCodeDestination);
             String inputText = URLEncoder.encode(sentenceToBeTranslated, StandardCharsets.UTF_8);
             eb.setTitle("Google Translate", link + inputText);
 
-            String originLocale = new Locale(language).getDisplayLanguage(Locale.ENGLISH);
-            String wantedLocale = new Locale(destinationLanguage).getDisplayLanguage(Locale.ENGLISH);
+            String originLocale = new Locale(langCodeOrigin).getDisplayLanguage(Locale.ENGLISH);
+            String wantedLocale = new Locale(langCodeDestination).getDisplayLanguage(Locale.ENGLISH);
 
             eb.addField(originLocale + " -> " + wantedLocale, sentenceToBeTranslated + " -> " + result, false);
             eb.setColor(Color.BLUE);
 
-            event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+            hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
         }
     }
 
