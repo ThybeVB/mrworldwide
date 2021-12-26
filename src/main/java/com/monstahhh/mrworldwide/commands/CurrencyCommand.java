@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -24,6 +25,9 @@ public class CurrencyCommand extends ListenerAdapter {
         if (event.getGuild() == null || !event.getName().equals("convert"))
             return;
 
+        event.deferReply(false).queue();
+        InteractionHook hook = event.getHook();
+
         try {
             double amount = event.getOption("amount").getAsDouble();
             String currentCurrency = event.getOption("originalcurrency").getAsString();
@@ -33,7 +37,7 @@ public class CurrencyCommand extends ListenerAdapter {
                 EmbedBuilder eb = defaultError;
                 eb.addField("Converter Error", "You can't enter the same currency twice!", false);
                 eb.addField("Example", "convert 1.25 eur usd", false);
-                event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+                hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
                 return;
             }
 
@@ -44,16 +48,16 @@ public class CurrencyCommand extends ListenerAdapter {
                     EmbedBuilder eb = defaultError;
                     eb.addField("Server Error", "503: Currency Server was unable to be reached.", false);
 
-                    event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+                    hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
                 } else {
                     MessageEmbed embed = getCurrencyEmbed(prices[0], prices[1], currentCurrency, destinationCurrency);
-                    event.replyEmbeds(embed).setEphemeral(false).queue();
+                    hook.sendMessageEmbeds(embed).setEphemeral(false).queue();
                 }
             } else {
                 EmbedBuilder eb = defaultError;
                 eb.addField("Currency Error", "It seems that one or both of the currencies are wrong or don't exist.", false);
                 eb.addField("Example", "convert 1.25 eur usd", false);
-                event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+                hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
             }
 
 
@@ -61,7 +65,7 @@ public class CurrencyCommand extends ListenerAdapter {
             EmbedBuilder eb = defaultError;
             eb.addField("Currency Error", "It seems that one or both of the currencies are wrong or don't exist.", false);
             eb.addField("Example", "convert 1.25 eur usd", false);
-            event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+            hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
         }
     }
 

@@ -23,7 +23,6 @@ import java.io.IOException;
 public class MrWorldWide {
 
     private static JDA jda;
-    public static long OwnerId = 257247527630274561L;
 
     public static void main(String[] args) throws IOException, LoginException {
         Config config = new Config().read();
