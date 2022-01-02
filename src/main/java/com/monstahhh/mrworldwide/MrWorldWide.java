@@ -5,6 +5,7 @@ import com.monstahhh.mrworldwide.commands.CurrencyCommand;
 import com.monstahhh.mrworldwide.commands.HelpCommand;
 import com.monstahhh.mrworldwide.commands.TranslateCommand;
 import com.monstahhh.mrworldwide.commands.weather.WeatherCommand;
+import com.monstahhh.mrworldwide.database.Database;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -22,9 +23,10 @@ import java.io.IOException;
 
 public class MrWorldWide {
 
-    private static JDA jda;
+    public static JDA jda;
 
     public static void main(String[] args) throws IOException, LoginException {
+        new Database();
         Config config = new Config().read();
 
         JDABuilder builder = JDABuilder.createDefault(config.getToken());
