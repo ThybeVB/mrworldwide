@@ -12,15 +12,16 @@ public class ChangeClock extends ListenerAdapter {
         if (event.getGuild() == null || (!event.getName().equals("config") && !event.getSubcommandName().equals("changeclock")))
             return;
 
-        //long userId = event.getAuthor().getIdLong();
+        event.deferReply(true).queue();
 
-        //Time currentTime = getUserTimeSetting(userId);
-        //Time newTime = getNewTime(currentTime);
+        long userId = event.getUser().getIdLong();
 
-        //setUserTimeSetting(userId, newTime);
-        //event.getChannel().sendMessage("Time has been changed from `" + currentTime + "` to `" + newTime + "` for " + event.getAuthor().getAsMention()).queue();
-        //TODO
+        Time currentTime = this.getUserTimeSetting(userId);
+        Time newTime = this.getNewTime(currentTime);
 
+        this.setUserTimeSetting(userId, newTime);
+
+        event.getHook().sendMessage("Time has been changed from `" + currentTime + "` to `" + newTime + "` for " + event.getUser().getAsMention()).queue();
     }
 
     private void setUserTimeSetting(long userId, Time time) {
@@ -29,7 +30,11 @@ public class ChangeClock extends ListenerAdapter {
 
     private Time getUserTimeSetting(long userId) {
         Profile profile = new Profile(userId);
-        return profile.getTimeSetting();
+        Time time = profile.getTimeSetting();
+        if (time != null)
+            return time;
+
+        return Time.TWENTYFOURHOUR;
     }
 
     private Time getNewTime(Time currentTime) {

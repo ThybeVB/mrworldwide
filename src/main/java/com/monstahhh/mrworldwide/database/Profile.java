@@ -4,9 +4,10 @@ import com.monstahhh.mrworldwide.MrWorldWide;
 import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
 import net.dv8tion.jda.api.entities.User;
 
+import java.awt.*;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Profile extends Database {
 
@@ -20,18 +21,18 @@ public class Profile extends Database {
         ChangeClock.Time userTime = null;
 
         try {
-            Statement stmt = connection.createStatement();
-            String sql = String.format("SELECT clockType FROM users WHERE userId=%s);", user.getIdLong());
-
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "SELECT clockType FROM users WHERE userId=?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, user.getIdLong());
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String result = rs.getString("clockType");
-                userTime = ChangeClock.Time.valueOf(result);
+                if (!result.isEmpty())
+                    userTime = ChangeClock.Time.valueOf(result);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
 
         return userTime;
     }

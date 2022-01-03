@@ -36,7 +36,7 @@ public class MrWorldWide {
         builder.setActivity(Activity.watching("the world"));
         builder.setAutoReconnect(true);
         builder.addEventListeners(new HelpCommand(), new TranslateCommand(), new WeatherCommand(), new CurrencyCommand(), new ChangeClock());
-        /*configureMemoryUsage(builder);*/
+        configureIntents(builder);
 
         jda = builder.build();
 
@@ -69,11 +69,10 @@ public class MrWorldWide {
                                 .addOptions(new OptionData(OptionType.STRING, "city", "The country you want to be bound to"))
                 )
         );
-
         commands.queue();
     }
 
-    private static void configureMemoryUsage(JDABuilder builder) {
+    private static void configureIntents(JDABuilder builder) {
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.enableCache(CacheFlag.ONLINE_STATUS);
         builder.enableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS);
