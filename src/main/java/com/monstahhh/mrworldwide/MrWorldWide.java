@@ -62,7 +62,11 @@ public class MrWorldWide {
                                 new OptionData(OptionType.STRING, "destinationlanguage", "The language that the sentence must be translated to").setRequired(true)
                         ),
                 new CommandData("config", "Customize settings for the weather module").addSubcommands(
-                        new SubcommandData("changeclock", "Customize your time format (AM/PM - 00:00) in the weather command")
+                        new SubcommandData("changeclock", "Customize your time format (AM/PM - 00:00)"),
+                        new SubcommandData("city", "Customize your default city")
+                                .addOptions(new OptionData(OptionType.STRING, "city", "The city you want to be bound to")),
+                        new SubcommandData("country", "Customize your default country")
+                                .addOptions(new OptionData(OptionType.STRING, "city", "The country you want to be bound to"))
                 )
         );
 
