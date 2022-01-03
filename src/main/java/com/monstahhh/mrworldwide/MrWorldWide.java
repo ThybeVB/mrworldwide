@@ -4,6 +4,7 @@ import com.monstahhh.config.Config;
 import com.monstahhh.mrworldwide.commands.CurrencyCommand;
 import com.monstahhh.mrworldwide.commands.HelpCommand;
 import com.monstahhh.mrworldwide.commands.TranslateCommand;
+import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
 import com.monstahhh.mrworldwide.commands.weather.WeatherCommand;
 import com.monstahhh.mrworldwide.database.Database;
 import net.dv8tion.jda.api.JDA;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.Compression;
@@ -33,7 +35,7 @@ public class MrWorldWide {
         builder.setCompression(Compression.ZLIB);
         builder.setActivity(Activity.watching("the world"));
         builder.setAutoReconnect(true);
-        builder.addEventListeners(new HelpCommand(), new TranslateCommand(), new WeatherCommand(), new CurrencyCommand());
+        builder.addEventListeners(new HelpCommand(), new TranslateCommand(), new WeatherCommand(), new CurrencyCommand(), new ChangeClock());
         /*configureMemoryUsage(builder);*/
 
         jda = builder.build();
@@ -58,7 +60,10 @@ public class MrWorldWide {
                                 new OptionData(OptionType.STRING, "sentence", "The sentence that should be translated").setRequired(true),
                                 new OptionData(OptionType.STRING, "originallanguage", "The language that the sentence originally is in").setRequired(true),
                                 new OptionData(OptionType.STRING, "destinationlanguage", "The language that the sentence must be translated to").setRequired(true)
-                        )
+                        ),
+                new CommandData("config", "Customize settings for the weather module").addSubcommands(
+                        new SubcommandData("changeclock", "Customize your time format (AM/PM - 00:00) in the weather command")
+                )
         );
 
         commands.queue();

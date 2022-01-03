@@ -9,7 +9,7 @@ public class ChangeClock extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        if (event.getGuild() == null || !event.getName().equals("weather"))
+        if (event.getGuild() == null || !event.getName().equals("changeclock"))
             return;
 
         //long userId = event.getAuthor().getIdLong();
