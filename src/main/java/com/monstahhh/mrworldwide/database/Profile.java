@@ -41,7 +41,14 @@ public class Profile {
 
     private void createProfile() {
         System.out.println("creating profile"); //TODO
-
+        try {
+            String sql = "INSERT INTO users (userId) VALUES (?);";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, user.getIdLong());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public ChangeClock.Time getTimeSetting() {
