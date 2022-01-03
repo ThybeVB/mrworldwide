@@ -80,9 +80,9 @@ public class CurrencyCommand extends ListenerAdapter {
             String formedLanguageCode = base.toUpperCase() + "_" + destination.toUpperCase();
 
             float baseValue = Float.parseFloat(obj.get(formedLanguageCode).toString());
-            float newPrice = baseValue * (float)amount;
+            float newPrice = baseValue * (float) amount;
 
-            return new float[]{(float)amount, newPrice};
+            return new float[]{(float) amount, newPrice};
 
         } catch (Exception e) {
             if (e.getMessage().contains("503")) {

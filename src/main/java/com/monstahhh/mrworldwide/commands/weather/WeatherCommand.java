@@ -12,6 +12,6 @@ public class WeatherCommand extends ListenerAdapter {
             return;
 
         //TODO
-        
+
     }
 }

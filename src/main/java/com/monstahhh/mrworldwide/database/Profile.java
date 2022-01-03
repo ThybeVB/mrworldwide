@@ -4,7 +4,6 @@ import com.monstahhh.mrworldwide.MrWorldWide;
 import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
 import net.dv8tion.jda.api.entities.User;
 
-import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,10 +23,10 @@ public class Profile {
 
     private boolean recordExists() {
         boolean exists = false;
-        try {
-            String sql = String.format("SELECT userId FROM users WHERE userId=%s", user.getIdLong());
-            Statement stmt = connection.createStatement();
+        String sql = String.format("SELECT userId FROM users WHERE userId=%s", user.getIdLong());
 
+        try {
+            Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 if (rs.getLong("userId") != 0L)
@@ -40,9 +39,9 @@ public class Profile {
     }
 
     private void createProfile() {
-        System.out.println("creating profile"); //TODO
+        String sql = "INSERT INTO users (userId) VALUES (?);";
+
         try {
-            String sql = "INSERT INTO users (userId) VALUES (?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setLong(1, user.getIdLong());
             ps.executeUpdate();
@@ -53,19 +52,18 @@ public class Profile {
 
     public ChangeClock.Time getTimeSetting() {
         ChangeClock.Time userTime = null;
+        String sql = "SELECT clockType FROM users WHERE userId=?;";
 
         try {
-            String sql = "SELECT clockType FROM users WHERE userId=?;";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setLong(1, user.getIdLong());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String result = rs.getString("clockType");
                 if (result != null) {
-                    if (result.isEmpty())
+                    if (!result.isEmpty())
                         userTime = ChangeClock.Time.valueOf(result);
                 }
-
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -75,6 +73,15 @@ public class Profile {
     }
 
     public void setTimeSetting(ChangeClock.Time newTime) {
-        String sql = "";
+        String sql = "UPDATE users SET clockType=? WHERE userId=?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newTime.toString());
+            ps.setLong(2, user.getIdLong());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

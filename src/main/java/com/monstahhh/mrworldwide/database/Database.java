@@ -32,10 +32,10 @@ public class Database {
     private void initialize() {
         String initUsersTable =
                 "CREATE TABLE IF NOT EXISTS users " +
-                "(userId INTEGER PRIMARY KEY," +
-                "city TEXT," +
-                "country TEXT," +
-                "clockType TEXT);";
+                        "(userId INTEGER PRIMARY KEY," +
+                        "city TEXT," +
+                        "country TEXT," +
+                        "clockType TEXT);";
 
         try {
             Statement stmt = connection.createStatement();
