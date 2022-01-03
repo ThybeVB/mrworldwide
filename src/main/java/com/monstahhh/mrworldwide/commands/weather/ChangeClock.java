@@ -25,7 +25,8 @@ public class ChangeClock extends ListenerAdapter {
     }
 
     private void setUserTimeSetting(long userId, Time time) {
-        //TODO
+        Profile profile = new Profile(userId);
+        profile.setTimeSetting(time);
     }
 
     private Time getUserTimeSetting(long userId) {

@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class Database {
 
-    protected Connection connection;
+    public static Connection connection;
 
     public Database() {
         if (this.connect())
@@ -20,7 +20,7 @@ public class Database {
             String url = "jdbc:sqlite:mrworldwide.db";
             conn = DriverManager.getConnection(url);
 
-            this.connection = conn;
+            connection = conn;
             System.out.println("Connected to SQLite database");
             return true;
         } catch (SQLException e) {
