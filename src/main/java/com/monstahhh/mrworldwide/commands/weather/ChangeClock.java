@@ -9,11 +9,10 @@ public class ChangeClock extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        if (event.getGuild() == null || (!event.getName().equals("config") && !event.getSubcommandName().equals("changeclock")))
+        if (event.getGuild() == null || !event.getSubcommandName().equals("changeclock"))
             return;
 
         event.deferReply(true).queue();
-
         long userId = event.getUser().getIdLong();
 
         Time currentTime = this.getUserTimeSetting(userId);
@@ -21,7 +20,8 @@ public class ChangeClock extends ListenerAdapter {
 
         this.setUserTimeSetting(userId, newTime);
 
-        event.getHook().sendMessage("Time has been changed from `" + currentTime + "` to `" + newTime + "` for " + event.getUser().getAsMention()).queue();
+        String response = String.format("Time has been changed from `%s` to `%s` for %s", currentTime, newTime, event.getUser().getAsMention());
+        event.getHook().sendMessage(response).queue();
     }
 
     private void setUserTimeSetting(long userId, Time time) {
