@@ -40,7 +40,6 @@ public class MrWorldWide {
 
         jda = builder.build();
 
-
         CommandListUpdateAction commands = jda.updateCommands();
         commands.addCommands(
                 new CommandData("help", "Receive the various commands of the bot"),
@@ -69,6 +68,7 @@ public class MrWorldWide {
                                 .addOptions(new OptionData(OptionType.STRING, "city", "The country you want to be bound to"))
                 )
         );
+
         commands.queue();
     }
 

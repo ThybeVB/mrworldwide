@@ -2,6 +2,7 @@ package com.monstahhh.mrworldwide.database;
 
 import com.monstahhh.mrworldwide.MrWorldWide;
 import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
+import com.monstahhh.mrworldwide.weather.City;
 import net.dv8tion.jda.api.entities.User;
 
 import java.sql.PreparedStatement;
@@ -80,6 +81,18 @@ public class Profile {
             ps.setString(1, newTime.toString());
             ps.setLong(2, user.getIdLong());
             ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setCity(City city) {
+        String sql = "UPDATE users SET city=? WHERE userId=?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, city.cityName);
+            ps.setLong(2, user.getIdLong());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

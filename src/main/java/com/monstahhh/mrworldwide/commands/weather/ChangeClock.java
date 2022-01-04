@@ -5,11 +5,13 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class ChangeClock extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        if (event.getGuild() == null || !event.getSubcommandName().equals("changeclock"))
+        if (event.getGuild() == null || !Objects.equals(event.getSubcommandName(), "changeclock"))
             return;
 
         event.deferReply(true).queue();
