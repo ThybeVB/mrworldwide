@@ -1,6 +1,9 @@
 package com.monstahhh.mrworldwide.commands.weather;
 
+import com.monstahhh.mrworldwide.weather.City;
+import com.monstahhh.mrworldwide.weather.WeatherService;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -31,25 +34,40 @@ public class WeatherCommand extends ListenerAdapter {
         OptionMapping countryInput = event.getOption("country");
 
         if (cityInput != null && countryInput != null) {
-            this.cityAndCountry();
+            this.cityAndCountry(cityInput.getAsString(), countryInput.getAsString(), event);
         } else if (cityInput == null && countryInput != null) {
-            this.countryOnly();
+            this.countryOnly(countryInput.getAsString(), event);
         } else if (cityInput != null) {
-            cityOnly();
+            cityOnly(cityInput.getAsString(), event);
         } else {
             event.getHook().sendMessageEmbeds(invalidLocError.build()).queue();
         }
     }
 
-    private void cityOnly() {
-        //TODO
+    private void cityOnly(String cityName, SlashCommandEvent e) {
+        WeatherService service = new WeatherService();
+
+        City city = service.getLocation(cityName);
+        MessageEmbed embed = service.getEmbedFor(city);
+
+        e.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private void countryOnly() {
-        //TODO
+    private void countryOnly(String countryName, SlashCommandEvent e) {
+        WeatherService service = new WeatherService();
+
+        City city = service.getLocation(null, countryName);
+        MessageEmbed embed = service.getEmbedFor(city);
+
+        e.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private void cityAndCountry() {
-        //TODO
+    private void cityAndCountry(String cityName, String countryName, SlashCommandEvent e) {
+        WeatherService service = new WeatherService();
+
+        City city = service.getLocation(cityName, countryName);
+        MessageEmbed embed = service.getEmbedFor(city);
+
+        e.getHook().sendMessageEmbeds(embed).queue();
     }
 }
