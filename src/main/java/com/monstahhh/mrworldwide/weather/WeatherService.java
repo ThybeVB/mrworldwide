@@ -16,31 +16,37 @@ public class WeatherService {
             .setTitle("Mr. Error")
             .setColor(Color.RED);
 
-    public City getLocation(String cityName) {
-        return null;
-    }
-
     public City getLocation(String cityName, String countryName) {
-
-        if (cityName == null) {
-
-        } else {
-
-        }
-
         return null;
     }
 
-    private String callLocation() throws IOException {
+    public City getLocationCity(String cityName) {
+        return null;
+    }
+
+    public City getLocationCountry(String countryName) {
+        //TODO check capital of country
+        return null;
+    }
+
+    private String callLocation(String cityName, String countryCode) throws IOException {
         HttpClient client = new HttpClient();
         Config conf = new Config().read();
 
-        String formattedSend = String.format("?q=%s&appid=%s&units=metric", ""/*TODO*/, conf.getWeatherToken());
+        String formattedSend = String.format("?q=%s,%s&appid=%s&units=metric", cityName, countryCode, conf.getWeatherToken());
         HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
 
-        String resultStr = result.asString();
+        return result.asString();
+    }
 
-        return resultStr;
+    private String callLocation(String cityName) throws IOException {
+        HttpClient client = new HttpClient();
+        Config conf = new Config().read();
+
+        String formattedSend = String.format("?q=%s&appid=%s&units=metric", cityName, conf.getWeatherToken());
+        HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
+
+        return result.asString();
     }
 
     public MessageEmbed getEmbedFor(City city) {

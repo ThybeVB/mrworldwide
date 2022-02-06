@@ -47,7 +47,7 @@ public class WeatherCommand extends ListenerAdapter {
     private void cityOnly(String cityName, SlashCommandEvent e) {
         WeatherService service = new WeatherService();
 
-        City city = service.getLocation(cityName);
+        City city = service.getLocationCity(cityName);
         MessageEmbed embed = service.getEmbedFor(city);
 
         e.getHook().sendMessageEmbeds(embed).queue();
@@ -56,7 +56,7 @@ public class WeatherCommand extends ListenerAdapter {
     private void countryOnly(String countryName, SlashCommandEvent e) {
         WeatherService service = new WeatherService();
 
-        City city = service.getLocation(null, countryName);
+        City city = service.getLocationCountry(countryName);
         MessageEmbed embed = service.getEmbedFor(city);
 
         e.getHook().sendMessageEmbeds(embed).queue();
