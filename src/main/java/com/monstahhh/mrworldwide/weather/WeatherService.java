@@ -4,11 +4,15 @@ import com.monstahhh.config.Config;
 import com.monstahhh.http.HttpClient;
 import com.monstahhh.http.HttpMethod;
 import com.monstahhh.http.HttpResponse;
+import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
+import com.monstahhh.mrworldwide.database.Profile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Locale;
 
 public class WeatherService {
 
@@ -16,37 +20,55 @@ public class WeatherService {
             .setTitle("Mr. Error")
             .setColor(Color.RED);
 
-    public City getLocation(String cityName, String countryName) {
-        return null;
+    public City getLocation(String cityName, String countryName, SlashCommandEvent e) {
+        Profile profile = new Profile(e.getUser().getIdLong());
+        ChangeClock.Time time = profile.getTimeSetting();
+
+        String resultJson = this.callLocation(cityName, countryName);
+
+        return new City().getCityObjectForJson(resultJson, time);
     }
 
-    public City getLocationCity(String cityName) {
-        return null;
+    public City getLocationCity(String cityName, SlashCommandEvent e) {
+        Profile profile = new Profile(e.getUser().getIdLong());
+        ChangeClock.Time time = profile.getTimeSetting();
+
+        String resultJson = this.callLocation(cityName);
+
+        return new City().getCityObjectForJson(resultJson, time);
     }
 
-    public City getLocationCountry(String countryName) {
+    public City getLocationCountry(String countryName, SlashCommandEvent e) {
         //TODO check capital of country
         return null;
     }
 
-    private String callLocation(String cityName, String countryCode) throws IOException {
-        HttpClient client = new HttpClient();
-        Config conf = new Config().read();
+    private String callLocation(String cityName, String countryCode) {
+        try {
+            HttpClient client = new HttpClient();
+            Config conf = new Config().read();
 
-        String formattedSend = String.format("?q=%s,%s&appid=%s&units=metric", cityName, countryCode, conf.getWeatherToken());
-        HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
+            String formattedSend = String.format("?q=%s,%s&appid=%s&units=metric", cityName, countryCode, conf.getWeatherToken());
+            HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
 
-        return result.asString();
+            return result.asString();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
-    private String callLocation(String cityName) throws IOException {
-        HttpClient client = new HttpClient();
-        Config conf = new Config().read();
+    private String callLocation(String cityName) {
+        try {
+            HttpClient client = new HttpClient();
+            Config conf = new Config().read();
 
-        String formattedSend = String.format("?q=%s&appid=%s&units=metric", cityName, conf.getWeatherToken());
-        HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
+            String formattedSend = String.format("?q=%s&appid=%s&units=metric", cityName, conf.getWeatherToken());
+            HttpResponse result = client.request(HttpMethod.GET, ("http://api.openweathermap.org/data/2.5/weather" + formattedSend));
 
-        return result.asString();
+            return result.asString();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public MessageEmbed getEmbedFor(City city) {
@@ -56,9 +78,9 @@ public class WeatherService {
             eb.setThumbnail(city.iconUrl);
 
             if (city.temperature >= 40) {
-                eb.setTitle("Weather for " + city.cityName + ", " /*+getCountryName(city.countryCode) + TODO  " <:40DEGREESFUCK:617781121236860963>"*/);
+                eb.setTitle("Weather for " + city.cityName + ", " +getCountryName(city.countryCode) +  " <:40DEGREESFUCK:617781121236860963>");
             } else {
-                eb.setTitle("Weather for " + city.cityName + ", "  /*+getCountryName(city.countryCode) TODO */);
+                eb.setTitle("Weather for " + city.cityName + ", "  +getCountryName(city.countryCode));
             }
             eb.addField("Temperature", city.temperature + "°C", false);
 
@@ -99,6 +121,15 @@ public class WeatherService {
             failEmbed.addField("City Error", "Embed Creation failed: " + e.getCause().toString(), false);
 
             return failEmbed.build();
+        }
+    }
+
+    private String getCountryName(String countryCode) {
+        try {
+            Locale l = new Locale("", countryCode.toUpperCase());
+            return l.getDisplayCountry(Locale.ENGLISH);
+        } catch (Exception exception) {
+            return null;
         }
     }
 
