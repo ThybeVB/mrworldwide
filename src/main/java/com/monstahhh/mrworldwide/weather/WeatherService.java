@@ -9,6 +9,8 @@ import com.monstahhh.mrworldwide.database.Profile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.IOException;
@@ -39,8 +41,20 @@ public class WeatherService {
     }
 
     public City getLocationCountry(String countryName, SlashCommandEvent e) {
-        //TODO check capital of country
-        return null;
+        JSONObject country = this.getCountryInformation(countryName);
+        if (country != null) {
+            String capital = country.getJSONArray("capital").getString(0);
+            String countryCode = country.getString("cca2");
+
+            Profile profile = new Profile(e.getUser().getIdLong());
+            ChangeClock.Time time = profile.getTimeSetting();
+
+            String loc = this.callLocation(capital, countryCode);
+
+            return new City().getCityObjectForJson(loc, time);
+        } else {
+            return null;
+        }
     }
 
     private String callLocation(String cityName, String countryCode) {
@@ -133,4 +147,17 @@ public class WeatherService {
         }
     }
 
+    private JSONObject getCountryInformation(String countryName) {
+        try {
+            String formattedSend = String.format("https://restcountries.com/v3.1/name/%s", countryName);
+            HttpResponse result = new HttpClient().request(HttpMethod.GET, formattedSend);
+
+            String resultStr = result.asString();
+            JSONArray jsonArr = new JSONArray(resultStr);
+
+            return jsonArr.getJSONObject(0);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }
