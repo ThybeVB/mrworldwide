@@ -4,7 +4,7 @@ import com.monstahhh.config.Config;
 import com.monstahhh.http.HttpClient;
 import com.monstahhh.http.HttpMethod;
 import com.monstahhh.http.HttpResponse;
-import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
+import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
 import com.monstahhh.mrworldwide.database.Profile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -24,7 +24,7 @@ public class WeatherService {
 
     public City getLocation(String cityName, String countryName, SlashCommandEvent e) {
         Profile profile = new Profile(e.getUser().getIdLong());
-        ChangeClock.Time time = profile.getTimeSetting();
+        ChangeClockCommand.Time time = profile.getTimeSetting();
 
         String resultJson = this.callLocation(cityName, countryName);
 
@@ -33,11 +33,24 @@ public class WeatherService {
 
     public City getLocationCity(String cityName, SlashCommandEvent e) {
         Profile profile = new Profile(e.getUser().getIdLong());
-        ChangeClock.Time time = profile.getTimeSetting();
+        ChangeClockCommand.Time time = profile.getTimeSetting();
 
         String resultJson = this.callLocation(cityName);
 
         return new City().getCityObjectForJson(resultJson, time);
+    }
+
+    public City getPersonalLocation(SlashCommandEvent e) {
+        Profile profile = new Profile(e.getUser().getIdLong());
+        ChangeClockCommand.Time time = profile.getTimeSetting();
+
+        String cityName = profile.getCity();
+        if (cityName != null) {
+            String resultJson = this.callLocation(cityName);
+            return new City().getCityObjectForJson(resultJson, time);
+        }
+
+       return null;
     }
 
     public City getLocationCountry(String countryName, SlashCommandEvent e) {
@@ -47,7 +60,7 @@ public class WeatherService {
             String countryCode = country.getString("cca2");
 
             Profile profile = new Profile(e.getUser().getIdLong());
-            ChangeClock.Time time = profile.getTimeSetting();
+            ChangeClockCommand.Time time = profile.getTimeSetting();
 
             String loc = this.callLocation(capital, countryCode);
 
@@ -56,6 +69,7 @@ public class WeatherService {
             return null;
         }
     }
+
 
     private String callLocation(String cityName, String countryCode) {
         try {

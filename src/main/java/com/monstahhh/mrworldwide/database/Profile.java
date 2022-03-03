@@ -1,7 +1,7 @@
 package com.monstahhh.mrworldwide.database;
 
 import com.monstahhh.mrworldwide.MrWorldWide;
-import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
+import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
 import com.monstahhh.mrworldwide.weather.City;
 import net.dv8tion.jda.api.entities.User;
 
@@ -51,8 +51,8 @@ public class Profile {
         }
     }
 
-    public ChangeClock.Time getTimeSetting() {
-        ChangeClock.Time userTime = null;
+    public ChangeClockCommand.Time getTimeSetting() {
+        ChangeClockCommand.Time userTime = null;
         String sql = "SELECT clockType FROM users WHERE userId=?;";
 
         try {
@@ -63,7 +63,7 @@ public class Profile {
                 String result = rs.getString("clockType");
                 if (result != null) {
                     if (!result.isEmpty())
-                        userTime = ChangeClock.Time.valueOf(result);
+                        userTime = ChangeClockCommand.Time.valueOf(result);
                 }
             }
         } catch (SQLException e) {
@@ -73,7 +73,7 @@ public class Profile {
         return userTime;
     }
 
-    public void setTimeSetting(ChangeClock.Time newTime) {
+    public void setTimeSetting(ChangeClockCommand.Time newTime) {
         String sql = "UPDATE users SET clockType=? WHERE userId=?";
 
         try {
@@ -96,5 +96,28 @@ public class Profile {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public String getCity() {
+        String sql = "SELECT city FROM users WHERE userId=?;";
+        String city = null;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, user.getIdLong());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String result = rs.getString("city");
+                if (result != null) {
+                    if (!result.isEmpty()) {
+                        city = result;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return city;
     }
 }

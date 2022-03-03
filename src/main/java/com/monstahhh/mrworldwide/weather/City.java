@@ -1,6 +1,6 @@
 package com.monstahhh.mrworldwide.weather;
 
-import com.monstahhh.mrworldwide.commands.weather.ChangeClock;
+import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ public class City {
     public String iconUrl;
     public Color embedColor;
 
-    City getCityObjectForJson(String json, ChangeClock.Time time) throws JSONException {
+    City getCityObjectForJson(String json, ChangeClockCommand.Time time) throws JSONException {
 
         JSONObject object = new JSONObject(json);
 
@@ -50,7 +50,7 @@ public class City {
         TimeZone utc = TimeZone.getTimeZone("UTC");
 
         SimpleDateFormat simpleTime;
-        if (time == ChangeClock.Time.TWENTYFOURHOUR) {
+        if (time == ChangeClockCommand.Time.TWENTYFOURHOUR) {
             simpleTime = new java.text.SimpleDateFormat("HH:mm");
         } else {
             simpleTime = new java.text.SimpleDateFormat("hh:mm a");

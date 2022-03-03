@@ -24,6 +24,13 @@ public class WeatherCommand extends ListenerAdapter {
             .addField("Notice", "If you want to set your own city, use the setcity command.", false)
             .setFooter("Example: /weather city:Brussels country:Belgium", null);
 
+    private final EmbedBuilder noPersonalLocError = new EmbedBuilder()
+            .setTitle("Mr. Error")
+            .setColor(Color.RED)
+            .addField("Location Error", "We could not find a location linked to your profile.", false)
+            .addField("Notice", "If you want to set your own city, use the /setcity command.", false)
+            .setFooter("Example: /setcity city:Harelbeke", null);
+
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (event.getGuild() == null || !event.getName().equals("weather"))
@@ -32,6 +39,11 @@ public class WeatherCommand extends ListenerAdapter {
         event.deferReply(false).queue();
         OptionMapping cityInput = event.getOption("city");
         OptionMapping countryInput = event.getOption("country");
+
+        if (cityInput == null && countryInput == null) {
+            this.personal(event);
+            return;
+        }
 
         if (cityInput != null && countryInput != null) {
             this.cityAndCountry(cityInput.getAsString(), countryInput.getAsString(), event);
@@ -69,5 +81,17 @@ public class WeatherCommand extends ListenerAdapter {
         MessageEmbed embed = service.getEmbedFor(city);
 
         e.getHook().sendMessageEmbeds(embed).queue();
+    }
+
+    private void personal(SlashCommandEvent e) {
+        WeatherService service = new WeatherService();
+        City city = service.getPersonalLocation(e);
+
+        if (city != null) {
+            MessageEmbed embed = service.getEmbedFor(city);
+            e.getHook().sendMessageEmbeds(embed).queue();
+        } else {
+            e.getHook().sendMessageEmbeds(noPersonalLocError.build()).queue();
+        }
     }
 }
