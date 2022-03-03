@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Config {
 
@@ -58,12 +59,11 @@ public class Config {
     }
 
     public Config read() throws IOException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        File file = new File(classLoader.getResource("config.yml").getFile());
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("config.yml");
 
         ObjectMapper om = new ObjectMapper(new YAMLFactory());
 
-        return om.readValue(file, Config.class);
+        return om.readValue(stream, Config.class);
     }
 
 }
