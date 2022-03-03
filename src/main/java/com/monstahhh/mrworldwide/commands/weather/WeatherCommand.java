@@ -22,14 +22,14 @@ public class WeatherCommand extends ListenerAdapter {
             .setColor(Color.RED)
             .addField("Argument Error", "It seems that you did not enter a valid location", false)
             .addField("Notice", "If you want to set your own city, use the setcity command.", false)
-            .setFooter("Example: /weather city:Brussels country:Belgium", null);
+            .setFooter("Example: /city city:Brussels", null);
 
     private final EmbedBuilder noPersonalLocError = new EmbedBuilder()
             .setTitle("Mr. Error")
             .setColor(Color.RED)
             .addField("Location Error", "We could not find a location linked to your profile.", false)
             .addField("Notice", "If you want to set your own city, use the /setcity command.", false)
-            .setFooter("Example: /setcity city:Harelbeke", null);
+            .setFooter("Example: /city city:Harelbeke", null);
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {

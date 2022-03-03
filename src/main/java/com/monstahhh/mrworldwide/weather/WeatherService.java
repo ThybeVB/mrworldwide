@@ -85,7 +85,7 @@ public class WeatherService {
         }
     }
 
-    private String callLocation(String cityName) {
+    public String callLocation(String cityName) {
         try {
             HttpClient client = new HttpClient();
             Config conf = new Config().read();

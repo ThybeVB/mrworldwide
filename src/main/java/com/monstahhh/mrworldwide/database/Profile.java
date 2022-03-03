@@ -86,13 +86,14 @@ public class Profile {
         }
     }
 
-    public void setCity(City city) {
+    public void setCity(String cityName) {
         String sql = "UPDATE users SET city=? WHERE userId=?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, city.cityName);
+            ps.setString(1, cityName);
             ps.setLong(2, user.getIdLong());
+            ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

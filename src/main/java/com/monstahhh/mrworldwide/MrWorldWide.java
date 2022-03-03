@@ -5,6 +5,7 @@ import com.monstahhh.mrworldwide.commands.CurrencyCommand;
 import com.monstahhh.mrworldwide.commands.HelpCommand;
 import com.monstahhh.mrworldwide.commands.TranslateCommand;
 import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
+import com.monstahhh.mrworldwide.commands.weather.SetCityCommand;
 import com.monstahhh.mrworldwide.commands.weather.WeatherCommand;
 import com.monstahhh.mrworldwide.database.Database;
 import net.dv8tion.jda.api.JDA;
@@ -35,7 +36,7 @@ public class MrWorldWide {
         builder.setCompression(Compression.ZLIB);
         builder.setActivity(Activity.watching("the world"));
         builder.setAutoReconnect(true);
-        builder.addEventListeners(new HelpCommand(), new TranslateCommand(), new WeatherCommand(), new CurrencyCommand(), new ChangeClockCommand());
+        builder.addEventListeners(new HelpCommand(), new TranslateCommand(), new WeatherCommand(), new CurrencyCommand(), new ChangeClockCommand(), new SetCityCommand());
         configureIntents(builder);
 
         jda = builder.build();
