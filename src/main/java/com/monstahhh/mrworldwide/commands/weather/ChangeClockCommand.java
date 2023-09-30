@@ -1,7 +1,7 @@
 package com.monstahhh.mrworldwide.commands.weather;
 
 import com.monstahhh.mrworldwide.database.Profile;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ChangeClockCommand extends ListenerAdapter {
 
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getGuild() == null || !Objects.equals(event.getSubcommandName(), "changeclock"))
             return;
 

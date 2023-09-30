@@ -1,6 +1,6 @@
 package com.monstahhh.mrworldwide.commands;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +22,7 @@ public class HelpCommand extends ListenerAdapter {
             "\nSupport Server: https://discord.gg/CrZ7FZ7";
 
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getGuild() == null || !event.getName().equals("help"))
             return;
 

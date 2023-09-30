@@ -2,7 +2,6 @@ package com.monstahhh.mrworldwide.database;
 
 import com.monstahhh.mrworldwide.MrWorldWide;
 import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
-import com.monstahhh.mrworldwide.weather.City;
 import net.dv8tion.jda.api.entities.User;
 
 import java.sql.PreparedStatement;

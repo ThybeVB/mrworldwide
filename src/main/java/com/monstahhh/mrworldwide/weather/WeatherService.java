@@ -8,7 +8,7 @@ import com.monstahhh.mrworldwide.commands.weather.ChangeClockCommand;
 import com.monstahhh.mrworldwide.database.Profile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,7 +22,7 @@ public class WeatherService {
             .setTitle("Mr. Error")
             .setColor(Color.RED);
 
-    public City getLocation(String cityName, String countryName, SlashCommandEvent e) {
+    public City getLocation(String cityName, String countryName, SlashCommandInteractionEvent e) {
         Profile profile = new Profile(e.getUser().getIdLong());
         ChangeClockCommand.Time time = profile.getTimeSetting();
 
@@ -31,7 +31,7 @@ public class WeatherService {
         return new City().getCityObjectForJson(resultJson, time);
     }
 
-    public City getLocationCity(String cityName, SlashCommandEvent e) {
+    public City getLocationCity(String cityName, SlashCommandInteractionEvent e) {
         Profile profile = new Profile(e.getUser().getIdLong());
         ChangeClockCommand.Time time = profile.getTimeSetting();
 
@@ -40,7 +40,7 @@ public class WeatherService {
         return new City().getCityObjectForJson(resultJson, time);
     }
 
-    public City getPersonalLocation(SlashCommandEvent e) {
+    public City getPersonalLocation(SlashCommandInteractionEvent e) {
         Profile profile = new Profile(e.getUser().getIdLong());
         ChangeClockCommand.Time time = profile.getTimeSetting();
 
@@ -50,10 +50,10 @@ public class WeatherService {
             return new City().getCityObjectForJson(resultJson, time);
         }
 
-       return null;
+        return null;
     }
 
-    public City getLocationCountry(String countryName, SlashCommandEvent e) {
+    public City getLocationCountry(String countryName, SlashCommandInteractionEvent e) {
         JSONObject country = this.getCountryInformation(countryName);
         if (country != null) {
             String capital = country.getJSONArray("capital").getString(0);
@@ -106,9 +106,9 @@ public class WeatherService {
             eb.setThumbnail(city.iconUrl);
 
             if (city.temperature >= 40) {
-                eb.setTitle("Weather for " + city.cityName + ", " +getCountryName(city.countryCode) +  " <:40DEGREESFUCK:617781121236860963>");
+                eb.setTitle("Weather for " + city.cityName + ", " + getCountryName(city.countryCode) + " <:40DEGREESFUCK:617781121236860963>");
             } else {
-                eb.setTitle("Weather for " + city.cityName + ", "  +getCountryName(city.countryCode));
+                eb.setTitle("Weather for " + city.cityName + ", " + getCountryName(city.countryCode));
             }
             eb.addField("Temperature", city.temperature + "°C", false);
 

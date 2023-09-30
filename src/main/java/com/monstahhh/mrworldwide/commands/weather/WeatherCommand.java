@@ -4,7 +4,7 @@ import com.monstahhh.mrworldwide.weather.City;
 import com.monstahhh.mrworldwide.weather.WeatherService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class WeatherCommand extends ListenerAdapter {
             .setFooter("Example: /city city:Harelbeke", null);
 
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getGuild() == null || !event.getName().equals("weather"))
             return;
 
@@ -56,7 +56,7 @@ public class WeatherCommand extends ListenerAdapter {
         }
     }
 
-    private void cityOnly(String cityName, SlashCommandEvent e) {
+    private void cityOnly(String cityName, SlashCommandInteractionEvent e) {
         WeatherService service = new WeatherService();
 
         City city = service.getLocationCity(cityName, e);
@@ -65,7 +65,7 @@ public class WeatherCommand extends ListenerAdapter {
         e.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private void countryOnly(String countryName, SlashCommandEvent e) {
+    private void countryOnly(String countryName, SlashCommandInteractionEvent e) {
         WeatherService service = new WeatherService();
 
         City city = service.getLocationCountry(countryName, e);
@@ -74,7 +74,7 @@ public class WeatherCommand extends ListenerAdapter {
         e.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private void cityAndCountry(String cityName, String countryName, SlashCommandEvent e) {
+    private void cityAndCountry(String cityName, String countryName, SlashCommandInteractionEvent e) {
         WeatherService service = new WeatherService();
 
         City city = service.getLocation(cityName, countryName, e);
@@ -83,7 +83,7 @@ public class WeatherCommand extends ListenerAdapter {
         e.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private void personal(SlashCommandEvent e) {
+    private void personal(SlashCommandInteractionEvent e) {
         WeatherService service = new WeatherService();
         City city = service.getPersonalLocation(e);
 
