@@ -36,7 +36,7 @@ public class CurrencyCommand extends ListenerAdapter {
             if (currentCurrency.equalsIgnoreCase(destinationCurrency)) {
                 EmbedBuilder eb = defaultError;
                 eb.addField("Converter Error", "You can't enter the same currency twice!", false);
-                eb.addField("Example", "convert 1.25 eur usd", false);
+                //eb.addField("Example", "convert 1.25 eur usd", false); new command system
                 hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
                 return;
             }
@@ -56,7 +56,7 @@ public class CurrencyCommand extends ListenerAdapter {
             } else {
                 EmbedBuilder eb = defaultError;
                 eb.addField("Currency Error", "It seems that one or both of the currencies are wrong or don't exist.", false);
-                eb.addField("Example", "convert 1.25 eur usd", false);
+                //eb.addField("Example", "convert 1.25 eur usd", false); new command system
                 hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
             }
 
@@ -64,7 +64,7 @@ public class CurrencyCommand extends ListenerAdapter {
         } catch (Exception e) {
             EmbedBuilder eb = defaultError;
             eb.addField("Currency Error", "It seems that one or both of the currencies are wrong or don't exist.", false);
-            eb.addField("Example", "convert 1.25 eur usd", false);
+            //eb.addField("Example", "convert 1.25 eur usd", false); new command systems
             hook.sendMessageEmbeds(eb.build()).setEphemeral(false).queue();
         }
     }
